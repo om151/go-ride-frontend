@@ -62,7 +62,7 @@ const CaptainSignup = () => {
   return (
     <div className="py-5 px-5 h-screen flex flex-col justify-between">
     <div>
-    <img className="w-20 mb-3" src="https://www.svgrepo.com/show/505031/uber-driver.svg" alt="" />
+    <img className="w-33 -ml-2 mb-8" src="/log.png" alt="" />
 
       <form onSubmit={submitHandler}>
         <h3 className="text-base mb-2 w-full font-medium">What's our Captain's name</h3>
