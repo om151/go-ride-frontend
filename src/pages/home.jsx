@@ -68,7 +68,7 @@ const Home = () => {
 
   socket.on("ride-started", (ride) => {
     setWaitingForDriver(false);
-    navigate("/riding", { state: { ride } }); // pass ride data here
+    navigate("/riding", { state: { ride,vehicleType } }); // pass ride data here
   });
 
   const handlePickupChange = async (e) => {
@@ -367,6 +367,7 @@ const Home = () => {
         className="fixed w-full z-10 bottom-0  py-6 px-3 bg-white pt-12"
       >
         <WaitingForDriver
+        vehicleType={vehicleType}
           ride={ride}
           setWaitingForDriver={setWaitingForDriver}
         />
