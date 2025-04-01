@@ -39,7 +39,7 @@ const FinishRide = (props) => {
        <img className="h-12 w-12 rounded-full object-cover" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw9tk89YzCM4exFNWNbbG4vRalCVHIVNUWyw&s" alt="" />
        <h2 className="text-lg font-medium">{props.rideData?.user.fullname.firstname + " " + props.rideData?.user.fullname.lastname}</h2>
    </div>
-   <h5 className="text-lg font-semibold">2.2 KM</h5>
+   <h5 className="text-lg font-semibold">{props.rideData?.distance} Km</h5>
  </div>
 
  <div className="flex gap-2 justify-between flex-col items-center">
