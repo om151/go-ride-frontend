@@ -12,12 +12,16 @@ const UserSignup = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userData, setUserData] = useState({});
+  const [error, setError] = useState('');
+  const[errorPath, setErrorPath] = useState('');
   
 
   const navigate = useNavigate();
   const {user, setUser} = React.useContext(UserDataContext);
 
   const submitHandler = async (e) => {
+    setError('');
+    setErrorPath('');
     e.preventDefault();
     const newUser = {
       fullname: {
@@ -27,7 +31,8 @@ const UserSignup = () => {
       email: email,
       password: password,
     }
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
 
     if(response.status === 201){
       const data = response.data;
@@ -36,12 +41,20 @@ const UserSignup = () => {
       localStorage.setItem('token', data.token);
       navigate('/home');
     }
+  }catch (error) {
+    // console.error("Error signing up:", error);
+    // console.log( "error is : " ,error.response.data.errors[0].msg);
+    setError(error.response?.data?.errors?.[0]?.msg || error.response?.data?.message || 'An error occurred');
+    setErrorPath(error.response?.data?.errors?.[0]?.path || 'email');
+  }
+
+   
 
 
-    setEmail("");
-    setPassword("");
-    setFirstName("");
-    setLastName("");
+    // setEmail("");
+    // setPassword("");
+    // setFirstName("");
+    // setLastName("");
   };
 
   return (
@@ -50,8 +63,9 @@ const UserSignup = () => {
       <img className="w-33 -ml-2 mb-8" src="/log.png" alt="" />
 
         <form onSubmit={submitHandler}>
+          <p>{error}</p>
           <h3 className="text-base mb-2 font-medium">What's your Name</h3>
-          <div className="flex gap-4 mb-6">
+          <div className="flex gap-4 mb-3 ">
             <input
               required
               type="text"
@@ -60,6 +74,7 @@ const UserSignup = () => {
               onChange={(e) => setFirstName(e.target.value)}
               className="bg-[#eeeeee] w-1/2  rounded px-4 py-2 border-0  text-base placeholder:text-sm"
             />
+            
 
             <input
               required
@@ -70,6 +85,7 @@ const UserSignup = () => {
               className="bg-[#eeeeee] w-1/2  rounded px-4 py-2 border-0 text-base placeholder:text-sm"
             />
           </div>
+          <p className="text-red-500 mb-3 text-sm">{errorPath == "fullname.firstname" ? error : errorPath == "fullname.lastname" ? error : ""}</p>
 
           <h3 className="text-base mb-2 font-medium">What's your Email</h3>
 
@@ -79,8 +95,9 @@ const UserSignup = () => {
             placeholder="email@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="bg-[#eeeeee] mb-6 rounded px-4 py-2 border-0 w-full text-base placeholder:text-sm"
+            className="bg-[#eeeeee] mb-3 rounded px-4 py-2 border-0 w-full text-base placeholder:text-sm"
           />
+          <p className="text-red-500 mb-3 text-sm">{errorPath == "email" ? error : ""}</p>
 
           <h3 className="text-base mb-2 font-medium">Enter Password</h3>
 
@@ -90,8 +107,9 @@ const UserSignup = () => {
             placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="bg-[#eeeeee] mb-6 rounded px-4 py-2 border-0 w-full text-base placeholder:text-sm"
+            className="bg-[#eeeeee] mb-3 rounded px-4 py-2 border-0 w-full text-base placeholder:text-sm"
           />
+          <p className="text-red-500 mb-3 text-sm">{errorPath == "password" ? error : ""}</p>
 
           <button className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2  w-full text-lg placeholder:text-base">
             Create account

@@ -28,6 +28,11 @@ const CaptainRiding = () => {
       [finishRidePanel]
     );
 
+    const [userLocation, setUserLocation] = useState({
+      lat: 20.5937,
+      lng: 78.9629,
+    });
+
 
   return (
       <div className="h-screen">
@@ -47,7 +52,7 @@ const CaptainRiding = () => {
         </Link>
       </div>
       <div className="h-4/5">
-        <LiveTracking/>
+      <LiveTracking userLocation={userLocation} setUserLocation={setUserLocation}/>
       </div>
     
       <div className="h-1/5 p-6 flex items-center justify-between relative bg-yellow-400" onClick={() => {

@@ -1,11 +1,11 @@
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import React, { useEffect, useState } from "react";
 
-const LiveTracking = () => {
-  const [userLocation, setUserLocation] = useState({
-    lat: 37.7749,
-    lng: -122.4194,
-  });
+const LiveTracking = (props) => {
+  // const [userLocation, setUserLocation] = useState({
+  //   lat: 37.7749,
+  //   lng: -122.4194,
+  // });
 
   useEffect(() => {
     let interval;
@@ -14,7 +14,7 @@ const LiveTracking = () => {
         navigator.geolocation.getCurrentPosition(
           (position) => {
             // console.log(`Position updated :` , position.coords.latitude,position.coords.longitude);
-            setUserLocation({
+            props.setUserLocation({
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             });
@@ -35,10 +35,10 @@ const LiveTracking = () => {
     <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API}>
       <GoogleMap
         mapContainerStyle={{ height: "100%", width: "100%" }}
-        center={userLocation}
+        center={props.userLocation}
         zoom={15}
       >
-        {userLocation && <Marker position={userLocation} />}
+        {props.userLocation && <Marker position={props.userLocation} />}
       </GoogleMap>
     </LoadScript>
   );

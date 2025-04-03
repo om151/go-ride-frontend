@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import LiveTracking from "../components/liveTracking";
 import { SocketContext } from "../context/SocketContext";
@@ -22,6 +22,11 @@ const Riding = () => {
     navigate("/home");
   });
 
+  const [userLocation, setUserLocation] = useState({
+        lat: 20.5937,
+        lng: 78.9629,
+      });
+
   return (
     <div className="h-screen">
       <Link
@@ -31,7 +36,7 @@ const Riding = () => {
         <i className="text-lg font-medium ri-home-5-line"></i>
       </Link>
       <div className="h-1/2">
-        <LiveTracking />
+        <LiveTracking userLocation={userLocation} setUserLocation={setUserLocation}/>
       </div>
 
       <div className="h-1/2 p-4">

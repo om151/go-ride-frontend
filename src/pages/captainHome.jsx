@@ -9,6 +9,7 @@ import { CaptainDataContext } from "../context/CaptainContext";
 import { SocketContext } from "../context/SocketContext";
 import axios from "axios";
 import LiveTracking from "../components/liveTracking";
+import CaptainProfilePanel from "./captain-profile";
 
 const CaptainHome = () => {
   const ridePopupPanelRef = useRef(null);
@@ -21,6 +22,11 @@ const CaptainHome = () => {
   const { captain } = useContext(CaptainDataContext);
 
   const [ride, setRide] = useState(null);
+
+  const [userLocation, setUserLocation] = useState({
+    lat: 20.5937,
+    lng: 78.9629,
+  });
 
   useEffect(() => {
     if (captain) {
@@ -106,23 +112,52 @@ const CaptainHome = () => {
     [confirmRidePopupPanel]
   );
 
+    const [profilePanel, setProfilePanel] = useState(false);
+    const profilePanelRef = useRef(null);
+
+    useGSAP(
+      function () {
+        if(profilePanel) {
+          gsap.to(profilePanelRef.current, {
+            transform: 'translateX(0)',
+          });
+        } else {
+          gsap.to(profilePanelRef.current, {
+            transform: 'translateX(100%)',
+          });
+        }
+      },
+      [profilePanel]
+    );
+
   return (
     <div className="h-screen">
-      <div className="fixed p-4 top-0 flex items-center justify-between w-screen">
-        <img
-          className="w-16"
-          src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
-          alt=""
-        />
-        <Link
-          to="/home"
-          className="  h-10 w-10 bg-white flex items-center justify-center rounded-full"
-        >
-          <i className="text-lg font-medium ri-logout-box-r-line"></i>
-        </Link>
+
+
+
+      <div className="flex flex-row relative z-[20] justify-between items-center bg-white h-15 px-4">
+      <img
+        className="w-24"
+        src="/log.png"
+        alt=""
+      />
+      <div className="rounded-full">
+      <button onClick={() => {
+        setProfilePanel(true)
+      }} className="cursor-pointer">
+              <i  className="ri-account-circle-fill text-2xl"></i>
+      </button>
       </div>
+      </div>
+
+      <div ref={profilePanelRef}   className="fixed top-0 right-0 h-full w-[100%] bg-white shadow-lg transform translate-x-full  z-[100] p-6">
+<CaptainProfilePanel setProfilePanel={setProfilePanel} userLocation={userLocation}/>
+</div>
+
+
+
       <div className="h-3/5">
-        <LiveTracking/>
+        <LiveTracking userLocation={userLocation} setUserLocation={setUserLocation}/>
       </div>
 
       <div className="h-2/5 p-4">

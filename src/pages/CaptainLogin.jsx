@@ -8,6 +8,7 @@ import {CaptainDataContext} from "../context/CaptainContext";
 const CaptainLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState('');
 
   const {captain, setCaptain} = React.useContext(CaptainDataContext);
   const navigate = useNavigate();
@@ -19,7 +20,8 @@ const CaptainLogin = () => {
       password: password,
     };
 
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captain);
+    try{
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captain);
 
     if (response.status === 200) {
       const data = response.data;
@@ -29,10 +31,13 @@ const CaptainLogin = () => {
       
       navigate("/captain-home");
     }
+    }catch(err){
+      // console.log(err);
+      setError('Invalid email or password');
+    }
     
     
-    setEmail("");
-    setPassword("");
+    
   };
   return (
     <div className="p-7 h-screen flex flex-col justify-between">
@@ -61,6 +66,7 @@ const CaptainLogin = () => {
             placeholder="Enter password"
             className="bg-[#eeeeee] mb-7 rounded px-4 py-2 border-0 w-full text-lg placeholder:text-base"
           />
+          <p className="text-red-600">{error}</p>
 
           <button className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2  w-full text-lg placeholder:text-base">
             Login

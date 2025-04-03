@@ -2,7 +2,7 @@ import { useGSAP } from "@gsap/react";
 import axios from "axios";
 import gsap from "gsap";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "remixicon/fonts/remixicon.css";
 import ConfirmRide from "../components/confirmRide";
 import LocationSearchPanel from "../components/locationSearchPanel";
@@ -12,6 +12,7 @@ import WaitingForDriver from "../components/waitingForDriver";
 import { SocketContext } from "../context/SocketContext";
 import { UserDataContext } from "../context/UserContext";
 import LiveTracking from "../components/liveTracking";
+import ProfilePanel from "./profilePanel";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -40,6 +41,8 @@ const Home = () => {
   const [destinationSuggestions, setDestinationSuggestions] = useState([]);
   const [activeField, setActiveField] = useState(null);
   const [fare, setFare] = useState({});
+
+
 
   const [vehicleType, setVehicleType] = useState(null);
 
@@ -90,7 +93,9 @@ const Home = () => {
       // console.log(err);
     }
   };
-
+  function clickhandler() {
+    console.log("clicked");
+  }
   const handleDestinationChange = async (e) => {
     setDestination(e.target.value);
     try {
@@ -194,12 +199,44 @@ const Home = () => {
     [waitingForDriver]
   );
 
+  const [profilePanel, setProfilePanel] = useState(false);
+  const profilePanelRef = useRef(null);
+
+  useGSAP(
+    function () {
+      if(profilePanel) {
+        gsap.to(profilePanelRef.current, {
+          transform: 'translateX(0)',
+        });
+      } else {
+        gsap.to(profilePanelRef.current, {
+          transform: 'translateX(100%)',
+        });
+      }
+    },
+    [profilePanel]
+  );
+
   function setDescription() {
     setPd(pickupDes);
     setDd(destinationDes);
   }
+  const [locationError, setLocationError] = useState("");
 
   async function findTrip() {
+
+    if (pickup === "") {
+      setLocationError("Pickup location cannot be empty");
+      return;
+    }
+    if(destination === ""){
+      setLocationError("Destination location cannot be empty");
+      return;
+    }
+    if (pickup === destination) {
+      setLocationError("Pickup and destination cannot be the same");
+      return;
+    }
     setVehiclePanel(true);
     setPanelOpen(false);
 
@@ -236,40 +273,87 @@ const Home = () => {
     // console.log(response.data);
   }
 
+  const [userLocation, setUserLocation] = useState({
+      lat: 20.5937,
+      lng: 78.9629,
+    });
+
+
+
+
   return (
-    <div className="h-screen relative overflow-hidden">
+    <div className="h-screen relative  overflow-hidden">
+     
+
+
+
+
+
+<div ref={profilePanelRef}   className="fixed top-0 right-0 h-full w-[100%] bg-white shadow-lg transform translate-x-full  z-[100] p-6">
+<ProfilePanel setProfilePanel={setProfilePanel} userLocation={userLocation}/>
+</div>
+
+
+
+
+
+
+
+
+
+      <div className="flex flex-row relative z-[1] justify-between items-center bg-white h-15 px-4">
       <img
-        className="w-16 absolute left-5 top-5"
-        src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
+        className="w-24"
+        src="/log.png"
         alt=""
       />
-      <div className="h-full w-full">
-        {/* image for temporary use */}
-        <LiveTracking/>
+      <div className="rounded-full">
+      <button onClick={() => {
+        setProfilePanel(true)
+      }} className="cursor-pointer">
+              <i  className="ri-account-circle-fill text-2xl"></i>
+      </button>
+      </div>
       </div>
 
+
+
+
+
+      <div className="h-full w-full z-[-3]">
+        {/* image for temporary use */}
+        <LiveTracking setUserLocation={setUserLocation} userLocation={userLocation}/>
+      </div>
+
+
+
+
+
+
+
       <div className=" flex flex-col justify-end h-screen absolute top-0 w-full ">
-        <div className="h-[30%] p-6 bg-white relative">
+        <div className="h-[34%] p-6 bg-white relative z-[1]">
           <h5
             ref={panelCloseRef}
             onClick={() => {
               setPanelOpen(false);
             }}
-            className="absolute top-5 right-5 text-2xl opacity-0"
+            className="absolute top-6 right-5 text-2xl opacity-0"
           >
-            <i className="ri-arrow-down-wide-line"></i>
+            <i className="ri-arrow-down-wide-line text-2xl"></i>
           </h5>
 
-          <h4 className="text-2xl font-semibold">Find a trip</h4>
+          <h4 className="text-2xl font-semibold ">Find a trip</h4>
 
           <form onSubmit={(e) => submitHandler(e)}>
-            <div className="line absolute h-16 w-1 top-[45%] left-10 bg-gray-700 rounded-full"></div>
+            <div className="line absolute h-16 w-1 top-[40%] left-10 bg-gray-700 rounded-full"></div>
             <input
               className="bg-[#eeeeee] px-12 py-2 text-base rounded-lg w-full mt-5"
               type="text"
               onClick={() => {
                 setPanelOpen(true);
                 setActiveField("pickup");
+                setLocationError("");
               }}
               value={pickup}
               onChange={handlePickupChange}
@@ -283,6 +367,7 @@ const Home = () => {
               onClick={() => {
                 setPanelOpen(true);
                 setActiveField("destination");
+                setLocationError("");
               }}
               value={destination}
               onChange={handleDestinationChange}
@@ -290,6 +375,7 @@ const Home = () => {
               id=""
               placeholder="Enter your destination"
             />
+            <p className="text-red-600 text-sm pl-2">{locationError}</p>
           </form>
           <button
             onClick={findTrip}
@@ -299,7 +385,7 @@ const Home = () => {
           </button>
         </div>
 
-        <div ref={panelRef} className=" bg-white  h-0  ">
+        <div ref={panelRef} className=" bg-white  h-0 overflow-hidden pt-2  ">
           <LocationSearchPanel
             suggestions={
               activeField === "pickup"
@@ -317,10 +403,15 @@ const Home = () => {
         </div>
       </div>
 
+
+      
+
       <div
         ref={vehiclePanelRef}
         className="fixed w-full z-10 bottom-0 translate-y-full py-10 px-3 bg-white pt-12"
       >
+
+
         <VehiclePanel
           fare={fare}
           selectVehicle={setVehicleType}

@@ -20,10 +20,16 @@ const CaptainSignup = () => {
     const [vehicleType, setVehicleType] = useState("");
     const [vehicleCapacity, setVehicleCapacity] = useState("");
 
+      const [error, setError] = useState('');
+      const[errorPath, setErrorPath] = useState('');
+
     const {captain, setCaptain} = React.useContext(CaptainDataContext);
   
     const submitHandler = async (e) => {
       e.preventDefault();
+
+      setError('');
+      setErrorPath('');
       
       const captainData = {
         fullname: {
@@ -40,6 +46,7 @@ const CaptainSignup = () => {
         },
       };
 
+    try{
       const responce = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData);
 
       if(responce.status === 201){
@@ -48,15 +55,22 @@ const CaptainSignup = () => {
         localStorage.setItem('token', data.token);
         navigate('/captain-home');
       }
+    }catch (error) {
+      console.error("Error signing up:", error);
+      // console.log( "error is : " ,error.response.data.errors[0].msg);
+      setError(error.response?.data?.errors?.[0]?.msg || error.response?.data?.message || 'An error occurred');
+      setErrorPath(error.response?.data?.errors?.[0]?.path || 'email');
+    }
+      
 
-      setEmail("");
-      setPassword("");
-      setFirstName("");
-      setLastName("");
-      setVehicleColor("");
-      setVehiclePlate("");
-      setVehicleType("");
-      setVehicleCapacity("");
+      // setEmail("");
+      // setPassword("");
+      // setFirstName("");
+      // setLastName("");
+      // setVehicleColor("");
+      // setVehiclePlate("");
+      // setVehicleType("");
+      // setVehicleCapacity("");
     };
   
   return (
@@ -86,6 +100,9 @@ const CaptainSignup = () => {
           />
         </div>
 
+        <p className="text-red-500 mb-3 text-sm">{errorPath == "fullname.firstname" ? error : errorPath == "fullname.lastname" ? error : ""}</p>
+        
+
         <h3 className="text-base mb-2 font-medium">What's our Captain's Email</h3>
 
         <input
@@ -96,6 +113,7 @@ const CaptainSignup = () => {
           onChange={(e) => setEmail(e.target.value)}
           className="bg-[#eeeeee] mb-6 rounded px-4 py-2 border-0 w-full text-base placeholder:text-sm"
         />
+        <p className="text-red-500 mb-3 text-sm">{errorPath == "email" ? error : ""}</p>
 
         <h3 className="text-base mb-2 font-medium">Enter Password</h3>
 
@@ -107,6 +125,7 @@ const CaptainSignup = () => {
           onChange={(e) => setPassword(e.target.value)}
           className="bg-[#eeeeee] mb-6 rounded px-4 py-2 border-0 w-full text-base placeholder:text-sm"
         />
+        <p className="text-red-500 mb-3 text-sm">{errorPath == "password" ? error : ""}</p>
 
         <h3 className="text-base mb-2 font-medium">Vehicle Information</h3>
 
@@ -154,6 +173,8 @@ const CaptainSignup = () => {
           </select>
 
         </div>
+
+        <p className="text-red-500 mb-3 text-sm">{errorPath == "vehicle.color" || errorPath == "vehicle.plate"   ? error : ""}</p>
 
         <button className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2  w-full text-lg placeholder:text-base">
           Create account

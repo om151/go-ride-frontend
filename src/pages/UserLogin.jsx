@@ -8,6 +8,7 @@ const UserLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userData , setUserData] = useState({});
+  const [error, setError] = useState('');
 
   const {user , setUser} = React.useContext(UserDataContext);
 
@@ -22,6 +23,7 @@ const UserLogin = () => {
     }
     
 
+   try{
     const responce = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData);
 
     if(responce.status === 200){
@@ -30,12 +32,17 @@ const UserLogin = () => {
       setUser(data.user);
       localStorage.setItem('token', data.token);
       navigate('/home');
+    }else{
+      // setError('Invalid email or password');
     }
 
+  }catch(err){
+    // console.log(err);
+    setError('Invalid email or password');
+   }
 
     // console.log(userData);
-    setEmail("");
-    setPassword("");
+    
   };
   return (
     <div className="p-7 h-screen flex flex-col justify-between">
@@ -56,6 +63,7 @@ const UserLogin = () => {
 
 
 
+
         <h3 className="text-lg mb-2 font-medium">Enter Password</h3>
 
         <input
@@ -65,7 +73,7 @@ const UserLogin = () => {
         placeholder="Enter password"
         className="bg-[#eeeeee] mb-7 rounded px-4 py-2 border-0 w-full text-lg placeholder:text-base"
          />
-
+<p className="text-red-600">{error}</p>
 
         <button  className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2  w-full text-lg placeholder:text-base">Login</button>
 
