@@ -10,6 +10,7 @@ import { SocketContext } from "../context/SocketContext";
 import axios from "axios";
 import LiveTracking from "../components/liveTracking";
 import CaptainProfilePanel from "./captain-profile";
+import CaptainNav from "../components/capain-nav";
 
 const CaptainHome = () => {
   const ridePopupPanelRef = useRef(null);
@@ -62,6 +63,7 @@ const CaptainHome = () => {
     setRidePopupPanel(true);
   });
 
+  
   async function confirmRide() {
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/rides/confirm`,
@@ -112,30 +114,30 @@ const CaptainHome = () => {
     [confirmRidePopupPanel]
   );
 
-    const [profilePanel, setProfilePanel] = useState(false);
-    const profilePanelRef = useRef(null);
+    // const [profilePanel, setProfilePanel] = useState(false);
+    // const profilePanelRef = useRef(null);
 
-    useGSAP(
-      function () {
-        if(profilePanel) {
-          gsap.to(profilePanelRef.current, {
-            transform: 'translateX(0)',
-          });
-        } else {
-          gsap.to(profilePanelRef.current, {
-            transform: 'translateX(100%)',
-          });
-        }
-      },
-      [profilePanel]
-    );
+    // useGSAP(
+    //   function () {
+    //     if(profilePanel) {
+    //       gsap.to(profilePanelRef.current, {
+    //         transform: 'translateX(0)',
+    //       });
+    //     } else {
+    //       gsap.to(profilePanelRef.current, {
+    //         transform: 'translateX(100%)',
+    //       });
+    //     }
+    //   },
+    //   [profilePanel]
+    // );
 
   return (
     <div className="h-screen">
 
 
 
-      <div className="flex flex-row relative z-[20] justify-between items-center bg-white h-15 px-4">
+      {/* <div className="flex flex-row relative z-[20] justify-between items-center bg-white h-15 px-4">
       <img
         className="w-24"
         src="/log.png"
@@ -152,7 +154,9 @@ const CaptainHome = () => {
 
       <div ref={profilePanelRef}   className="fixed top-0 right-0 h-full w-[100%] bg-white shadow-lg transform translate-x-full  z-[100] p-6">
 <CaptainProfilePanel setProfilePanel={setProfilePanel} userLocation={userLocation}/>
-</div>
+</div> */}
+
+<CaptainNav userLocation={userLocation}/>
 
 
 

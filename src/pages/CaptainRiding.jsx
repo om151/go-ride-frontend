@@ -4,6 +4,7 @@ import { useLocation, Link } from "react-router-dom";
 import gsap from "gsap";
 import FinishRide from "../components/finishRide";
 import LiveTracking from "../components/liveTracking";
+import CaptainNav from "../components/capain-nav";
 
 
 const CaptainRiding = () => {
@@ -37,20 +38,8 @@ const CaptainRiding = () => {
   return (
       <div className="h-screen">
            
-      <div className="fixed p-4 top-0 flex items-center justify-between w-screen">
-        <img
-          className="w-16"
-          src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
-          alt=""
-        />
-        <Link
-          to="/captain-home"
-          div
-          className="  h-10 w-10 bg-white flex items-center justify-center rounded-full"
-        >
-          <i className="text-lg font-medium ri-logout-box-r-line"></i>
-        </Link>
-      </div>
+           <CaptainNav userLocation={userLocation}/>
+
       <div className="h-4/5 z-[-3]">
       <LiveTracking userLocation={userLocation} setUserLocation={setUserLocation}/>
       </div>

@@ -13,6 +13,7 @@ import { SocketContext } from "../context/SocketContext";
 import { UserDataContext } from "../context/UserContext";
 import LiveTracking from "../components/liveTracking";
 import ProfilePanel from "./profilePanel";
+import Nav from "../components/nav";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -199,23 +200,23 @@ const Home = () => {
     [waitingForDriver]
   );
 
-  const [profilePanel, setProfilePanel] = useState(false);
-  const profilePanelRef = useRef(null);
+  // const [profilePanel, setProfilePanel] = useState(false);
+  // const profilePanelRef = useRef(null);
 
-  useGSAP(
-    function () {
-      if(profilePanel) {
-        gsap.to(profilePanelRef.current, {
-          transform: 'translateX(0)',
-        });
-      } else {
-        gsap.to(profilePanelRef.current, {
-          transform: 'translateX(100%)',
-        });
-      }
-    },
-    [profilePanel]
-  );
+  // useGSAP(
+  //   function () {
+  //     if(profilePanel) {
+  //       gsap.to(profilePanelRef.current, {
+  //         transform: 'translateX(0)',
+  //       });
+  //     } else {
+  //       gsap.to(profilePanelRef.current, {
+  //         transform: 'translateX(100%)',
+  //       });
+  //     }
+  //   },
+  //   [profilePanel]
+  // );
 
   function setDescription() {
     setPd(pickupDes);
@@ -289,18 +290,18 @@ const Home = () => {
 
 
 
-<div ref={profilePanelRef}   className="fixed top-0 right-0 h-full w-[100%] bg-white shadow-lg transform translate-x-full  z-[100] p-6">
+{/* <div ref={profilePanelRef}   className="fixed top-0 right-0 h-full w-[100%] bg-white shadow-lg transform translate-x-full  z-[100] p-6">
 <ProfilePanel setProfilePanel={setProfilePanel} userLocation={userLocation}/>
-</div>
+</div> */}
 
 
 
 
 
+<Nav userLocation={userLocation}/>
 
 
-
-
+{/* 
       <div className="flex flex-row relative z-[1] justify-between items-center bg-white h-15 px-4">
       <img
         className="w-24"
@@ -314,7 +315,7 @@ const Home = () => {
               <i  className="ri-account-circle-fill text-2xl"></i>
       </button>
       </div>
-      </div>
+      </div> */}
 
 
 

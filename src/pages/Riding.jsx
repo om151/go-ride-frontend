@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import LiveTracking from "../components/liveTracking";
 import { SocketContext } from "../context/SocketContext";
+import Nav from "../components/nav";
 
 const Riding = () => {
   const image = {
@@ -29,15 +30,16 @@ const Riding = () => {
 
   return (
     <div className="h-screen">
-      <Link
-        to="/home"
-        className="fixed right-2 top-2 h-10 w-10 bg-white flex items-center justify-center rounded-full"
-      >
-        <i className="text-lg font-medium ri-home-5-line"></i>
-      </Link>
+      
+
+      <Nav userLocation={userLocation}/>
+
+  
       <div className="h-1/2 z-[-3]">
         <LiveTracking userLocation={userLocation} setUserLocation={setUserLocation}/>
       </div>
+
+
 
       <div className="h-1/2 p-4">
         <div className="flex items-center justify-between">
