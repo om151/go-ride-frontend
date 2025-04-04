@@ -96,6 +96,45 @@ function CaptainProfilePanel(props) {
           <span>{locationInfo}</span>
         </div>
       </div>
+
+
+
+      <div>
+  <div className="mt-6">
+    <h3 className="text-xl font-semibold mb-3">Previous Rides</h3>
+    <div className="overflow-x-auto">
+      <div className="flex space-x-4 pb-4">
+        {profile?.captain?.rideHistory?.map((ride, index) => (
+          <div key={ride._id || index} className="flex-shrink-0 w-64 p-4 border rounded-lg shadow-sm">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium">Ride #{index+1}</span>
+            <span className="text-sm text-gray-500">₹{ride?.fare}</span>
+          </div>
+          <div className="space-y-1">
+            <div className="text-sm text-gray-600">
+              <i className="ri-map-pin-line mr-2"></i>
+              From: {ride?.pickup}
+            </div>
+            <div className="text-sm text-gray-600">
+              <i className="ri-map-pin-line mr-2"></i>
+              To: {ride?.destination}
+            </div>
+            <div className="text-sm text-gray-500">
+              <i className="ri-time-line mr-2"></i>
+              {new Date(ride?.createdAt).toLocaleDateString()}
+            </div>
+          </div>
+        </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
       
       <button onClick={ () => {
         handleLogout()
