@@ -51,7 +51,7 @@ const CaptainRiding = () => {
           <i className="text-lg font-medium ri-logout-box-r-line"></i>
         </Link>
       </div>
-      <div className="h-4/5">
+      <div className="h-4/5 z-[-3]">
       <LiveTracking userLocation={userLocation} setUserLocation={setUserLocation}/>
       </div>
     

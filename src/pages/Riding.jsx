@@ -35,7 +35,7 @@ const Riding = () => {
       >
         <i className="text-lg font-medium ri-home-5-line"></i>
       </Link>
-      <div className="h-1/2">
+      <div className="h-1/2 z-[-3]">
         <LiveTracking userLocation={userLocation} setUserLocation={setUserLocation}/>
       </div>
 
