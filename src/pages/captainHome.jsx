@@ -1,23 +1,25 @@
 import { useGSAP } from "@gsap/react";
+import axios from "axios";
 import gsap from "gsap";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import CaptainNav from "../components/capain-nav";
 import CaptainDetails from "../components/captainDetails";
+import ConfirmRidePlate from "../components/confirmRidePlate";
 import ConfirmRidePopUp from "../components/confirmRidePopUp";
+
 import RidePopUp from "../components/ridePopup";
 import { CaptainDataContext } from "../context/CaptainContext";
 import { SocketContext } from "../context/SocketContext";
-import axios from "axios";
-import LiveTracking from "../components/liveTracking";
-import CaptainProfilePanel from "./captain-profile";
-import CaptainNav from "../components/capain-nav";
+import LiveTrackingCaptain from "../components/liveTrackingCaptain";
 
 const CaptainHome = () => {
   const ridePopupPanelRef = useRef(null);
   const confirmRidePopupPanelRef = useRef(null);
+  const confirmRidePlateRef = useRef(null);
 
   const [ridePopupPanel, setRidePopupPanel] = useState(false);
   const [confirmRidePopupPanel, setConfirmRidePopupPanel] = useState(false);
+  const [confirmRidePlate, setConfirmRidePlate] = useState(false);
 
   const { socket } = useContext(SocketContext);
   const { captain } = useContext(CaptainDataContext);
@@ -63,7 +65,6 @@ const CaptainHome = () => {
     setRidePopupPanel(true);
   });
 
-  
   async function confirmRide() {
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/rides/confirm`,
@@ -79,9 +80,6 @@ const CaptainHome = () => {
     );
 
     // console.log("responce is : ", response);
-
-    setRidePopupPanel(false);
-    setConfirmRidePopupPanel(true);
   }
 
   useGSAP(
@@ -114,29 +112,41 @@ const CaptainHome = () => {
     [confirmRidePopupPanel]
   );
 
-    // const [profilePanel, setProfilePanel] = useState(false);
-    // const profilePanelRef = useRef(null);
+  useGSAP(
+    function () {
+      if (confirmRidePlate) {
+        gsap.to(confirmRidePlateRef.current, {
+          transform: "translateY(0)",
+        });
+      } else {
+        gsap.to(confirmRidePlateRef.current, {
+          transform: "translateY(100%)",
+        });
+      }
+    },
+    [confirmRidePlate]
+  );
 
-    // useGSAP(
-    //   function () {
-    //     if(profilePanel) {
-    //       gsap.to(profilePanelRef.current, {
-    //         transform: 'translateX(0)',
-    //       });
-    //     } else {
-    //       gsap.to(profilePanelRef.current, {
-    //         transform: 'translateX(100%)',
-    //       });
-    //     }
-    //   },
-    //   [profilePanel]
-    // );
+  // const [profilePanel, setProfilePanel] = useState(false);
+  // const profilePanelRef = useRef(null);
+
+  // useGSAP(
+  //   function () {
+  //     if(profilePanel) {
+  //       gsap.to(profilePanelRef.current, {
+  //         transform: 'translateX(0)',
+  //       });
+  //     } else {
+  //       gsap.to(profilePanelRef.current, {
+  //         transform: 'translateX(100%)',
+  //       });
+  //     }
+  //   },
+  //   [profilePanel]
+  // );
 
   return (
     <div className="h-screen">
-
-
-
       {/* <div className="flex flex-row relative z-[20] justify-between items-center bg-white h-15 px-4">
       <img
         className="w-24"
@@ -156,12 +166,14 @@ const CaptainHome = () => {
 <CaptainProfilePanel setProfilePanel={setProfilePanel} userLocation={userLocation}/>
 </div> */}
 
-<CaptainNav userLocation={userLocation}/>
-
-
+      <CaptainNav userLocation={userLocation} />
 
       <div className="h-3/5">
-        <LiveTracking userLocation={userLocation} setUserLocation={setUserLocation}/>
+        <LiveTrackingCaptain
+          userLocation={userLocation}
+          setUserLocation={setUserLocation}
+          ride={ride}
+        />
       </div>
 
       <div className="h-2/5 p-4">
@@ -174,10 +186,17 @@ const CaptainHome = () => {
       >
         <RidePopUp
           ride={ride}
-          setConfirmRidePopupPanel={setConfirmRidePopupPanel}
           setRidePopupPanel={setRidePopupPanel}
+          setConfirmRidePlate={setConfirmRidePlate}
           confirmRide={confirmRide}
         />
+      </div>
+
+      <div
+        ref={confirmRidePlateRef}
+        className="fixed w-full translate-y-full z-10 bottom-0 py-6 px-3 bg-green-400 pt-4"
+      >
+        <ConfirmRidePlate setConfirmRidePopupPanel={setConfirmRidePopupPanel} />
       </div>
 
       <div
@@ -185,8 +204,7 @@ const CaptainHome = () => {
         className="fixed w-full h-screen z-10 bottom-0 translate-y-full  py-6 px-3 bg-white pt-12"
       >
         <ConfirmRidePopUp
-        ride={ride}
-        
+          ride={ride}
           setConfirmRidePopupPanel={setConfirmRidePopupPanel}
           setRidePopupPanel={setRidePopupPanel}
         />

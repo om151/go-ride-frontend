@@ -54,7 +54,7 @@ function ProfilePanel(props) {
     // console.log(locationInfo);
 
     const handleLogout = async () => {
-        console.log("ckkk")
+        // console.log("ckkk")
         try {
             
             await axios.get(`${import.meta.env.VITE_BASE_URL}/users/logout`, {
@@ -109,7 +109,7 @@ function ProfilePanel(props) {
     <div className="overflow-x-auto">
       <div className="flex space-x-4 pb-4">
         {profile?.user?.rideHistory?.map((ride, index) => (
-          <div key={ride} className="flex-shrink-0 w-64 p-4 border rounded-lg shadow-sm">
+          <div key={index} className="flex-shrink-0 w-64 p-4 border rounded-lg shadow-sm">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium">Ride #{index+1}</span>
             <span className="text-sm text-gray-500">₹{ride?.fare}</span>

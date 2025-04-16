@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import LiveTracking from "../components/liveTracking";
+
 import { SocketContext } from "../context/SocketContext";
 import Nav from "../components/nav";
+import LiveTrackingUser from "../components/liveTrackingUser";
 
 const Riding = () => {
   const image = {
@@ -36,7 +37,7 @@ const Riding = () => {
 
   
       <div className="h-1/2 z-[-3]">
-        <LiveTracking userLocation={userLocation} setUserLocation={setUserLocation}/>
+        <LiveTrackingUser userLocation={userLocation} setUserLocation={setUserLocation} ride={ride}/>
       </div>
 
 

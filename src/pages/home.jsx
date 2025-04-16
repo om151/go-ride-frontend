@@ -2,18 +2,18 @@ import { useGSAP } from "@gsap/react";
 import axios from "axios";
 import gsap from "gsap";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "remixicon/fonts/remixicon.css";
 import ConfirmRide from "../components/confirmRide";
+
 import LocationSearchPanel from "../components/locationSearchPanel";
 import LookingForDriver from "../components/lookingForDriver";
+import Nav from "../components/nav";
 import VehiclePanel from "../components/vehiclepanle";
 import WaitingForDriver from "../components/waitingForDriver";
 import { SocketContext } from "../context/SocketContext";
 import { UserDataContext } from "../context/UserContext";
-import LiveTracking from "../components/liveTracking";
-import ProfilePanel from "./profilePanel";
-import Nav from "../components/nav";
+import LiveTrackingUser from "../components/liveTrackingUser";
 
 const Home = () => {
   const [pickup, setPickup] = useState("");
@@ -43,8 +43,6 @@ const Home = () => {
   const [activeField, setActiveField] = useState(null);
   const [fare, setFare] = useState({});
 
-
-
   const [vehicleType, setVehicleType] = useState(null);
 
   const [pd, setPd] = useState();
@@ -72,7 +70,7 @@ const Home = () => {
 
   socket.on("ride-started", (ride) => {
     setWaitingForDriver(false);
-    navigate("/riding", { state: { ride,vehicleType } }); // pass ride data here
+    navigate("/riding", { state: { ride, vehicleType } }); // pass ride data here
   });
 
   const handlePickupChange = async (e) => {
@@ -95,7 +93,7 @@ const Home = () => {
     }
   };
   function clickhandler() {
-    console.log("clicked");
+    // console.log("clicked");
   }
   const handleDestinationChange = async (e) => {
     setDestination(e.target.value);
@@ -115,16 +113,23 @@ const Home = () => {
     }
   };
 
+  const findPanelRef = useRef(null);
+
   useGSAP(
     function () {
       if (panelOpen) {
         gsap.to(panelRef.current, {
           height: "70%",
-          padding: 15,
+          padding: 0,
           opacity: 1,
         });
         gsap.to(panelCloseRef.current, {
           opacity: 1,
+        });
+        gsap.to(findPanelRef.current, {
+          justifyContent: "flex-end",
+          top: "0",
+          height: "screen",
         });
       } else {
         gsap.to(panelRef.current, {
@@ -134,6 +139,10 @@ const Home = () => {
         });
         gsap.to(panelCloseRef.current, {
           opacity: 0,
+        });
+        gsap.to(findPanelRef.current, {
+          justifyContent: "flex-start",
+          top: "auto",
         });
       }
     },
@@ -225,12 +234,11 @@ const Home = () => {
   const [locationError, setLocationError] = useState("");
 
   async function findTrip() {
-
     if (pickup === "") {
       setLocationError("Pickup location cannot be empty");
       return;
     }
-    if(destination === ""){
+    if (destination === "") {
       setLocationError("Destination location cannot be empty");
       return;
     }
@@ -253,6 +261,7 @@ const Home = () => {
     setFare(response.data);
     // console.log(response.data);
   }
+  const [captainLocation, setCaptainLocation] = useState({});
 
   async function createRide() {
     const response = await axios.post(
@@ -272,36 +281,24 @@ const Home = () => {
     );
 
     // console.log(response.data);
+
+    setCaptainLocation({ lat: 20.5937, lng: 78.9629 });
   }
 
   const [userLocation, setUserLocation] = useState({
-      lat: 20.5937,
-      lng: 78.9629,
-    });
-
-
-
+    lat: 20.5937,
+    lng: 78.9629,
+  });
 
   return (
-    <div className="h-screen relative  overflow-hidden">
-     
-
-
-
-
-
-{/* <div ref={profilePanelRef}   className="fixed top-0 right-0 h-full w-[100%] bg-white shadow-lg transform translate-x-full  z-[100] p-6">
+    <div className="h-screen relative overflow-hidden">
+      {/* <div ref={profilePanelRef}   className="fixed top-0 right-0 h-full w-[100%] bg-white shadow-lg transform translate-x-full  z-[100] p-6">
 <ProfilePanel setProfilePanel={setProfilePanel} userLocation={userLocation}/>
 </div> */}
 
+      <Nav userLocation={userLocation} />
 
-
-
-
-<Nav userLocation={userLocation}/>
-
-
-{/* 
+      {/* 
       <div className="flex flex-row relative z-[1] justify-between items-center bg-white h-15 px-4">
       <img
         className="w-24"
@@ -317,23 +314,20 @@ const Home = () => {
       </div>
       </div> */}
 
-
-
-
-
-      <div className="h-full w-full z-[-3]">
+      <div className="h-3/5">
         {/* image for temporary use */}
-        <LiveTracking setUserLocation={setUserLocation} userLocation={userLocation}/>
+        <LiveTrackingUser
+          setUserLocation={setUserLocation}
+          userLocation={userLocation}
+          ride = {ride}
+        />
       </div>
 
-
-
-
-
-
-
-      <div className=" flex flex-col justify-end h-screen absolute top-0 w-full ">
-        <div className="h-[34%] p-6 bg-white relative z-[1]">
+      <div
+        ref={findPanelRef}
+        className=" flex flex-col h-screen absolute  w-full "
+      >
+        <div className=" p-6 bg-white relative z-[1]">
           <h5
             ref={panelCloseRef}
             onClick={() => {
@@ -386,7 +380,7 @@ const Home = () => {
           </button>
         </div>
 
-        <div ref={panelRef} className=" bg-white  h-0 overflow-hidden pt-2  ">
+        <div ref={panelRef} className=" bg-white  h-0 overflow-hidden pt-1 ">
           <LocationSearchPanel
             suggestions={
               activeField === "pickup"
@@ -404,15 +398,10 @@ const Home = () => {
         </div>
       </div>
 
-
-      
-
       <div
         ref={vehiclePanelRef}
         className="fixed w-full z-10 bottom-0 translate-y-full py-10 px-3 bg-white pt-12"
       >
-
-
         <VehiclePanel
           fare={fare}
           selectVehicle={setVehicleType}
@@ -436,6 +425,7 @@ const Home = () => {
           createRide={createRide}
           setConfirmRidePanel={setConfirmRidePanel}
           setVehicleFound={setVehicleFound}
+          setVehiclePanel={setVehiclePanel}
         />
       </div>
 
@@ -459,7 +449,7 @@ const Home = () => {
         className="fixed w-full z-10 bottom-0  py-6 px-3 bg-white pt-12"
       >
         <WaitingForDriver
-        vehicleType={vehicleType}
+          vehicleType={vehicleType}
           ride={ride}
           setWaitingForDriver={setWaitingForDriver}
         />

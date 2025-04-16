@@ -48,9 +48,9 @@ const WaitingForDriver = (props) => {
               <i className="text-lg ri-map-pin-range-fill"></i>
               <div className="">
                 <h3 className="text-lg font-medium">{props.ride?.pickup}</h3>
-                <p className="text-sm -mt-1 text-gray-600">
+                {/* <p className="text-sm -mt-1 text-gray-600">
                 {props.ride?.pickupDes}
-                </p>
+                </p> */}
               </div>
             </div>
   
@@ -58,9 +58,9 @@ const WaitingForDriver = (props) => {
               <i className="text-lg ri-square-fill"></i>
               <div className="">
                 <h3 className="text-lg font-medium">{props.ride?.destination}</h3>
-                <p className="text-sm -mt-1 text-gray-600">
+                {/* <p className="text-sm -mt-1 text-gray-600">
                 {props.ride?.destinationDes}
-                </p>
+                </p> */}
               </div>
             </div>
   
