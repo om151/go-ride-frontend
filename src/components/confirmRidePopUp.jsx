@@ -1,10 +1,14 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SocketContext } from "../context/SocketContext";
 
 const ConfirmRidePopUp = (props) => {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
+
+   const { socket } = useContext(SocketContext);
+   const [ridding,setRidding] = useState(true);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -26,9 +30,11 @@ const ConfirmRidePopUp = (props) => {
       props.setConfirmRidePopupPanel(false);
       props.setRidePopupPanel(false);
 
-      navigate("/captain-riding", { state: { ride: props.ride } });
+      navigate("/captain-riding", { state: { ride: props.ride,ridding } });
     }
   };
+
+  ;
   return (
     <div>
       <h5 className="p-1 text-center w-[93%] absolute top-0 ">

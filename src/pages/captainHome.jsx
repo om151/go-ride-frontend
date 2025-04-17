@@ -12,6 +12,7 @@ import { CaptainDataContext } from "../context/CaptainContext";
 import { SocketContext } from "../context/SocketContext";
 import LiveTrackingCaptain from "../components/liveTrackingCaptain";
 
+
 const CaptainHome = () => {
   const ridePopupPanelRef = useRef(null);
   const confirmRidePopupPanelRef = useRef(null);
@@ -54,7 +55,7 @@ const CaptainHome = () => {
           },
         });
       });
-    }, 10000);
+    }, 2000);
 
     return () => clearInterval(locationIntervalId);
   });
@@ -63,6 +64,12 @@ const CaptainHome = () => {
     // console.log(data);
     setRide(data);
     setRidePopupPanel(true);
+  });
+  socket.on("ride-confirmed", (ride) => {
+    setRide(ride);
+  });
+  socket.on("ride-started", (ride) => {
+    setRide(ride);
   });
 
   async function confirmRide() {

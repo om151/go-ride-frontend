@@ -72,7 +72,7 @@ const Home = () => {
     setWaitingForDriver(false);
     navigate("/riding", { state: { ride, vehicleType } }); // pass ride data here
   });
-
+  
   const handlePickupChange = async (e) => {
     setPickup(e.target.value);
     try {
@@ -341,7 +341,7 @@ const Home = () => {
           <h4 className="text-2xl font-semibold ">Find a trip</h4>
 
           <form onSubmit={(e) => submitHandler(e)}>
-            <div className="line absolute h-16 w-1 top-[40%] left-10 bg-gray-700 rounded-full"></div>
+            <div className="line absolute h-16 w-1 top-[37%] left-10 bg-gray-700 rounded-full"></div>
             <input
               className="bg-[#eeeeee] px-12 py-2 text-base rounded-lg w-full mt-5"
               type="text"

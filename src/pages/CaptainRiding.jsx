@@ -1,5 +1,5 @@
 import { useGSAP } from "@gsap/react";
-import React, { useReducer, useRef, useState } from "react";
+import React, { useContext, useReducer, useRef, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import gsap from "gsap";
 import FinishRide from "../components/finishRide";
@@ -8,9 +8,13 @@ import CaptainNav from "../components/capain-nav";
 import LiveTrackingCaptain from "../components/liveTrackingCaptain";
 
 
+
 const CaptainRiding = () => {
   const location = useLocation();
   const rideData = location.state?.ride; // extract ride data if available
+
+
+  const ridding = location.state?.ridding; // extract ride data if available
 
   const [finishRidePanel , setFinishRidePanel] = useState(false);
   const finishRidePanelRef = useRef(null);
@@ -42,7 +46,7 @@ const CaptainRiding = () => {
            <CaptainNav userLocation={userLocation}/>
 
       <div className="h-4/5 z-[-3]">
-      <LiveTrackingCaptain userLocation={userLocation} setUserLocation={setUserLocation} ride={rideData}/>
+      <LiveTrackingCaptain userLocation={userLocation} setUserLocation={setUserLocation} ride={rideData} ridding={ridding}/>
       </div>
     
       <div className="h-1/5 p-6 flex items-center justify-between relative bg-yellow-400" onClick={() => {
