@@ -95,7 +95,7 @@ const LiveTrackingUser = (props) => {
   // console.log(props.ride);
 
   return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API}>
+    
       <GoogleMap
         mapContainerStyle={{ height: "100%", width: "100%" }}
         center={{
@@ -163,7 +163,7 @@ const LiveTrackingUser = (props) => {
 
         {/* Add more markers or components as needed */}
       </GoogleMap>
-    </LoadScript>
+    
   );
 };
 

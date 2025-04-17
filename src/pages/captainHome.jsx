@@ -169,11 +169,13 @@ const CaptainHome = () => {
       <CaptainNav userLocation={userLocation} />
 
       <div className="h-3/5">
+      
         <LiveTrackingCaptain
           userLocation={userLocation}
           setUserLocation={setUserLocation}
           ride={ride}
         />
+
       </div>
 
       <div className="h-2/5 p-4">

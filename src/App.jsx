@@ -15,13 +15,14 @@ import CaptainLogout from './pages/captainLogout'
 import Riding from './pages/Riding'
 import CaptainRiding from './pages/CaptainRiding'
 import "remixicon/fonts/remixicon.css";
+import { LoadScript } from '@react-google-maps/api'
 
 const App = () => {
 
   
   return (
     <div >
-      
+      <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API}>
       <Routes>
         <Route path="/" element={<Start/>} />
         <Route path="/login" element={<UserLogin/>} />
@@ -58,7 +59,7 @@ const App = () => {
         } />
         
       </Routes>
-      
+      </LoadScript>
     </div>
   )
 }

@@ -99,7 +99,7 @@ const LiveTrackingCaptain = (props) => {
   }, [props.ride?.destination]);
 
   return (
-    <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API}>
+    
       <GoogleMap
         mapContainerStyle={{ height: "100%", width: "100%" }}
         center={{
@@ -141,7 +141,6 @@ const LiveTrackingCaptain = (props) => {
           />
         )}
       </GoogleMap>
-    </LoadScript>
   );
 };
 
