@@ -237,8 +237,6 @@ const LiveTrackingUser = (props) => {
         />
       )}
 
-      {/* Add more markers or components as needed */}
-
       {directionPTD && (
         <Polyline
           path={
@@ -250,8 +248,17 @@ const LiveTrackingUser = (props) => {
           }
           options={{
             strokeColor: "#2e2d2d",
-            strokeOpacity: 0.7,
-            strokeWeight: 2,
+            strokeOpacity: 0,
+            strokeWeight: 3,
+            icons: [{
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                fillOpacity: 1,
+                scale: 3
+              },
+              offset: '0',
+              repeat: '10px'
+            }]
           }}
         />
       )}
