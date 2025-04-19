@@ -188,17 +188,17 @@ const LiveTrackingCaptain = (props) => {
         <Marker
           position={props.userLocation}
           icon={
-            props.ride?.vehicleType == "car"
+            props.ride?.vehicleType == "car" && props.ride?.status != "pending"
               ? {
                   url: "https://cdn-icons-png.flaticon.com/512/744/744465.png",
                   scaledSize: new window.google.maps.Size(40, 45),
                 }
-              : props.ride?.vehicleType == "moto"
+              : props.ride?.vehicleType == "moto" && props.ride?.status != "pending"
               ? {
                   url: "http://maps.google.com/mapfiles/ms/icons/cycling.png",
                   scaledSize: new window.google.maps.Size(30, 30),
                 }
-              : props.ride?.vehicleType == "auto"
+              : props.ride?.vehicleType == "auto" && props.ride?.status != "pending"
               ? {
                   url: "https://cdn-icons-png.flaticon.com/512/4786/4786827.png",
                   scaledSize: new window.google.maps.Size(30, 30),
@@ -207,7 +207,7 @@ const LiveTrackingCaptain = (props) => {
           }
         />
       )}
-      { pickupCoordinates?.lat && pickupCoordinates?.lng &&  (
+      { pickupCoordinates?.lat && pickupCoordinates?.lng && props.ride?.status != "pending" &&  (
         <Marker
           position={pickupCoordinates}
           icon={{

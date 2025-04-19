@@ -9,28 +9,34 @@ const ConfirmRidePopUp = (props) => {
 
    const { socket } = useContext(SocketContext);
    const [ridding,setRidding] = useState(true);
+   const [otpError, setOtpError] = useState("");
 
   const submitHandler = async (e) => {
+    setOtpError("");
     e.preventDefault();
 
-    const response = await axios.get(
-      `${import.meta.env.VITE_BASE_URL}/rides/start-ride`,
-      {
-        params: {
-          rideId: props.ride._id,
-          otp: otp,
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+    try{
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/rides/start-ride`,
+        {
+          params: {
+            rideId: props.ride._id,
+            otp: otp,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      // console.log(" status is : ", response.status);
+      if (response.status == 200) {
+        props.setConfirmRidePopupPanel(false);
+        props.setRidePopupPanel(false);
+  
+        navigate("/captain-riding", { state: { ride: props.ride,ridding } });
       }
-    );
-    // console.log(" status is : ", response.status);
-    if (response.status == 200) {
-      props.setConfirmRidePopupPanel(false);
-      props.setRidePopupPanel(false);
-
-      navigate("/captain-riding", { state: { ride: props.ride,ridding } });
+    }catch (err) {
+      setOtpError("Invalid OTP");
     }
   };
 
@@ -110,6 +116,8 @@ const ConfirmRidePopUp = (props) => {
               placeholder="Enter OTP"
               className="bg-[#eeeeee] px-6 py-4 font-mono rounded-lg w-full mt-5 mb-3"
             />
+
+<p className="text-red-600">{otpError}</p>
 
             <button className="flex justify-center w-full mt- bg-green-600 text-white text-lg font-semibold p-3 rounded-lg">
               Confirm

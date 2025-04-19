@@ -103,14 +103,14 @@ const LiveTrackingUser = (props) => {
   useEffect(() => {
     if (
       window.google &&
-      props.userLocation?.lat &&
+      props.ride?.captain?.location?.ltd &&
       destinationCoordinates?.lat
     ) {
       const directionsService = new window.google.maps.DirectionsService();
 
       directionsService.route(
         {
-          origin: { lat: props.userLocation.lat, lng: props.userLocation.lng },
+          origin: { lat: props.ride?.captain?.location?.ltd, lng: props.ride?.captain?.location?.lng },
           destination: {
             lat: destinationCoordinates.lat,
             lng: destinationCoordinates.lng,
@@ -173,7 +173,7 @@ const LiveTrackingUser = (props) => {
       }}
       zoom={15}
     >
-      {props?.userLocation && (
+      {props?.userLocation &&  props.ride?.status != "ongoing" && (
         <Marker
           position={props?.userLocation}
           icon={
@@ -201,7 +201,7 @@ const LiveTrackingUser = (props) => {
         />
       )}
 
-      {props.ride?.captain?.location && props.ride.status == "accepted" && (
+      {props.ride?.captain?.location && (
         <Marker
           position={{
             lat: props.ride?.captain?.location?.ltd,
