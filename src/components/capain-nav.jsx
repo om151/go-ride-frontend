@@ -13,10 +13,12 @@ const CaptainNav = (props) => {
             if(profilePanel) {
               gsap.to(profilePanelRef.current, {
                 transform: 'translateX(0)',
+                visibility:  "visible" ,
               });
             } else {
               gsap.to(profilePanelRef.current, {
                 transform: 'translateX(100%)',
+                visibility:  "hidden" ,
               });
             }
           },

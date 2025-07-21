@@ -94,10 +94,12 @@ const CaptainHome = () => {
       if (ridePopupPanel) {
         gsap.to(ridePopupPanelRef.current, {
           transform: "translateY(0)",
+          visibility:  "visible" ,
         });
       } else {
         gsap.to(ridePopupPanelRef.current, {
           transform: "translateY(100%)",
+          visibility:  "hidden" ,
         });
       }
     },
@@ -109,10 +111,12 @@ const CaptainHome = () => {
       if (confirmRidePopupPanel) {
         gsap.to(confirmRidePopupPanelRef.current, {
           transform: "translateY(0)",
+          visibility:  "visible" ,
         });
       } else {
         gsap.to(confirmRidePopupPanelRef.current, {
           transform: "translateY(100%)",
+          visibility:  "hidden" ,
         });
       }
     },
@@ -124,10 +128,12 @@ const CaptainHome = () => {
       if (confirmRidePlate) {
         gsap.to(confirmRidePlateRef.current, {
           transform: "translateY(0)",
+          visibility:  "visible" ,
         });
       } else {
         gsap.to(confirmRidePlateRef.current, {
           transform: "translateY(100%)",
+          visibility:  "hidden" ,
         });
       }
     },
